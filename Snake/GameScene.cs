@@ -46,8 +46,8 @@ namespace Snake
         SKLabelNode gameLogo;
         SKLabelNode bestScore;
         SKShapeNode playButton;
-        SKLabelNode currentScore;
         SKShapeNode gameBG;
+        public SKLabelNode currentScore;
 
         GameManager game;
 

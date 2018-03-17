@@ -19,6 +19,8 @@ namespace Snake
     {
         readonly GameScene scene;
 
+        int currentScore;
+
         double nextTime = 0;
         double timeExtension = 0.15;
 
@@ -54,12 +56,11 @@ namespace Snake
                 {
                     cell.Node.FillColor = UIColor.Clear;
 
-                    if (scene.scorePos != null) {
-                        if (Math.Floor(scene.scorePos.X) == cell.Y &&
-                            Math.Floor(scene.scorePos.Y) == cell.X)
-                        {
-                            cell.Node.FillColor = UIColor.Red;
-                        }
+                    // TODO:
+                    if (Math.Floor(scene.scorePos.X) == cell.Y &&
+                        Math.Floor(scene.scorePos.Y) == cell.X)
+                    {
+                        cell.Node.FillColor = UIColor.Red;
                     }
                 }
             }
@@ -67,10 +68,20 @@ namespace Snake
 
         void GenerateNewPoint()
         {
-            var randomX = random.NextDouble() * 19; // numCols - 1
-            var randomY = random.NextDouble() * 39; // numRows - 1
+            (var randomX, var randomY) = GenPointPos();
+
+            while (scene.playerPositions.Any(p =>
+                p.X == Math.Floor(randomX) &&
+                p.Y == Math.Floor(randomY)))
+            {
+                (randomX, randomY) = GenPointPos();
+            }
+
             scene.scorePos = new CGPoint(x: randomX, y: randomY);
         }
+
+        (double x, double y) GenPointPos() => (random.NextDouble() * 19,  // cols
+                                            random.NextDouble() * 39); // rows
 
         public void Update(double time)
         {
@@ -85,6 +96,8 @@ namespace Snake
                     nextTime = time + timeExtension;
 
                     UpdatePlayerPosition();
+
+                    CheckForScore();
                 }
             }
         }
@@ -153,6 +166,29 @@ namespace Snake
             }
 
             RenderChange();
+        }
+
+        void CheckForScore()
+        {
+            if (scene.playerPositions.Count > 0)
+            {
+                var x = scene.playerPositions[0].X;
+                var y = scene.playerPositions[0].Y;
+
+                // TODO:
+                if (Math.Floor(scene.scorePos.X) == y &&
+                    Math.Floor(scene.scorePos.Y) == x)
+                {
+                    currentScore += 1;
+                    scene.currentScore.Text = $"Score: {currentScore}";
+                    GenerateNewPoint();
+
+                    // add to snake
+                    scene.playerPositions.Add(scene.playerPositions.Last());
+                    scene.playerPositions.Add(scene.playerPositions.Last());
+                    scene.playerPositions.Add(scene.playerPositions.Last());
+                }
+            }
         }
 
         public void Swipe(int id)
