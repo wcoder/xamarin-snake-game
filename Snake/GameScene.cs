@@ -50,10 +50,10 @@ namespace Snake
     public class GameScene : SKScene
     {
         SKLabelNode gameLogo;
-        SKLabelNode bestScore;
         SKShapeNode playButton;
-        public SKShapeNode gameBG;
+        SKShapeNode gameBG;
         public SKLabelNode currentScore;
+        public SKLabelNode bestScore;
 
         GameManager game;
 
@@ -65,9 +65,9 @@ namespace Snake
 
         public GameScene(CGSize size) : base(size)
         {
-            InitializeMenu();
-
             game = new GameManager(this);
+
+            InitializeMenu();
 
             InitializeGameView();
         }
@@ -133,7 +133,7 @@ namespace Snake
                 x: Frame.GetMidX(),
                 y: gameLogo.Position.Y - 50);
             bestScore.FontSize = 40;
-            bestScore.Text = "Best Score: 0";
+            UpdateBestScoreLabel();
             bestScore.FontColor = UIColor.White;
             AddChild(bestScore);
 
@@ -161,6 +161,8 @@ namespace Snake
             playButton.Path = path;
             AddChild(playButton);
         }
+
+        void UpdateBestScoreLabel() => bestScore.Text = $"Best Score: {game.SavedBestScore}";
 
         void StartGame()
         {
@@ -272,6 +274,8 @@ namespace Snake
                     {
                         playButton.Hidden = false;
                         playButton.RunAction(SKAction.ScaleTo(1, 0.3));
+
+                        UpdateBestScoreLabel();
 
                         bestScore.RunAction(SKAction.MoveTo(
                         new CGPoint(

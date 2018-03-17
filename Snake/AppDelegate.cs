@@ -16,6 +16,9 @@ namespace Snake
     [Register("AppDelegate")]
     public class AppDelegate : UIApplicationDelegate
     {
+        public const string BEST_SCORE_KEY = "bestScore";
+
+
         // class-level declarations
 
         public override UIWindow Window
@@ -28,6 +31,9 @@ namespace Snake
         {
             // Override point for customization after application launch.
             // If not required for your application you can safely delete this method
+
+            var defaults = NSUserDefaults.StandardUserDefaults;
+            defaults.RegisterDefaults(new NSDictionary(BEST_SCORE_KEY, 0));
 
             return true;
         }

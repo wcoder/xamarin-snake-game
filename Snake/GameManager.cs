@@ -29,6 +29,8 @@ namespace Snake
 
         Random random = new Random();
 
+        public nint SavedBestScore => NSUserDefaults.StandardUserDefaults.IntForKey(AppDelegate.BEST_SCORE_KEY);
+
         public GameManager(GameScene scene)
         {
             this.scene = scene;
@@ -112,7 +114,7 @@ namespace Snake
             var xChange = -1;
             var yChange = 0;
 
-            switch (playerDirection) 
+            switch (playerDirection)
             {
                 case 1:
                     //left
@@ -154,23 +156,28 @@ namespace Snake
                 scene.playerPositions[0] = new Pos(scene.playerPositions[0].X + yChange, scene.playerPositions[0].Y + xChange);
             }
 
-            if (scene.playerPositions.Count > 0) {
-                
+            if (scene.playerPositions.Count > 0)
+            {
+
                 var pos = scene.playerPositions[0];
 
                 var x = pos.Y;
                 var y = pos.X;
 
-                if (y > 40) {
+                if (y > 40)
+                {
                     pos.X = 0;
                 }
-                else if (y < 0) {
+                else if (y < 0)
+                {
                     pos.X = 40;
                 }
-                else if (x > 20) {
+                else if (x > 20)
+                {
                     pos.Y = 0;
                 }
-                else if (x < 0) {
+                else if (x < 0)
+                {
                     pos.Y = 20;
                 }
             }
@@ -203,7 +210,8 @@ namespace Snake
 
         private void CheckForDeath()
         {
-            if (scene.playerPositions.Count > 0) {
+            if (scene.playerPositions.Count > 0)
+            {
                 var arrayOfPositions = scene.playerPositions.ToList();
                 var headOfSnake = arrayOfPositions[0];
 
@@ -234,20 +242,27 @@ namespace Snake
 
         void FinishAnimation()
         {
-            if (playerDirection == 0 && scene.playerPositions.Count > 0) {
+            if (playerDirection == 0 && scene.playerPositions.Count > 0)
+            {
                 var hasFinished = true;
                 var headOfSnake = scene.playerPositions[0];
 
                 foreach (var position in scene.playerPositions)
                 {
-                    if (!headOfSnake.Equals(position)) {
+                    if (!headOfSnake.Equals(position))
+                    {
                         hasFinished = false;
                     }
                 }
 
-                if (hasFinished) {
+                if (hasFinished)
+                {
                     Console.WriteLine("End game");
+
+                    UpdateScore();
+
                     playerDirection = 4;
+
                     //animation has completed
                     scene.scorePos = CGPoint.Empty;
                     scene.playerPositions.Clear();
@@ -259,5 +274,16 @@ namespace Snake
             }
         }
 
+        void UpdateScore()
+        {
+            var bestScore = SavedBestScore;
+            if (currentScore > bestScore)
+            {
+                NSUserDefaults.StandardUserDefaults.SetInt(currentScore, AppDelegate.BEST_SCORE_KEY);
+            }
+            currentScore = 0;
+            scene.currentScore.Text = "Score: 0";
+            scene.bestScore.Text = $"Best Score: {bestScore}";
+        }
     }
 }
