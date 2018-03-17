@@ -12,8 +12,16 @@ namespace Snake
 {
     public class GameManager
     {
-        public GameManager()
+        readonly GameScene scene;
+
+        public GameManager(GameScene scene)
         {
+            this.scene = scene;
+        }
+
+        public void InitGame()
+        {
+           
         }
     }
 }
