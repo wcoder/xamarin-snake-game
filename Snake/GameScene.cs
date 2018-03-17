@@ -39,7 +39,13 @@ namespace Snake
             X = x;
             Y = y;
         }
-    }
+
+		public override bool Equals(object obj)
+		{
+            var p = (Pos)obj;
+            return (X == p.X && Y == p.Y);
+		}
+	}
 
     public class GameScene : SKScene
     {

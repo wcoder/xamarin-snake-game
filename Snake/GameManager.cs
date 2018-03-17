@@ -81,7 +81,7 @@ namespace Snake
         }
 
         (double x, double y) GenPointPos() => (random.NextDouble() * 19,  // cols
-                                            random.NextDouble() * 39); // rows
+                                               random.NextDouble() * 39); // rows
 
         public void Update(double time)
         {
@@ -98,6 +98,8 @@ namespace Snake
                     UpdatePlayerPosition();
 
                     CheckForScore();
+
+                    CheckForDeath();
                 }
             }
         }
@@ -128,6 +130,11 @@ namespace Snake
                     //down
                     xChange = 0;
                     yChange = 1;
+                    break;
+                case 0:
+                    //dead
+                    xChange = 0;
+                    yChange = 0;
                     break;
                 default:
                     break;
@@ -191,6 +198,21 @@ namespace Snake
             }
         }
 
+        private void CheckForDeath()
+        {
+            if (scene.playerPositions.Count > 0) {
+                var arrayOfPositions = scene.playerPositions.ToList();
+                var headOfSnake = arrayOfPositions[0];
+
+                arrayOfPositions.RemoveAt(0);
+
+                if (arrayOfPositions.Any(p => p.Equals(headOfSnake)))
+                {
+                    playerDirection = 0;
+                }
+            }
+        }
+
         public void Swipe(int id)
         {
             if (!(id == 2 && playerDirection == 4) &&
@@ -199,7 +221,10 @@ namespace Snake
                 if (!(id == 1 && playerDirection == 3) &&
                     !(id == 3 && playerDirection == 1))
                 {
-                    playerDirection = id;
+                    if (playerDirection != 0)
+                    {
+                        playerDirection = id;
+                    }
                 }
             }
         }
