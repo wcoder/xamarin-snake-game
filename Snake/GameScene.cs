@@ -66,7 +66,21 @@ namespace Snake
 
         public override void DidMoveToView(SKView view)
         {
+            var swipeRight = new UISwipeGestureRecognizer(SwipeR);
+            swipeRight.Direction = UISwipeGestureRecognizerDirection.Right;
+            view.AddGestureRecognizer(swipeRight);
+                
+            var swipeLeft = new UISwipeGestureRecognizer(SwipeL);
+            swipeLeft.Direction = UISwipeGestureRecognizerDirection.Left;
+            view.AddGestureRecognizer(swipeLeft);
 
+            var swipeUp = new UISwipeGestureRecognizer(SwipeU);
+            swipeUp.Direction = UISwipeGestureRecognizerDirection.Up;
+            view.AddGestureRecognizer(swipeUp);
+
+            var swipeDown = new UISwipeGestureRecognizer(SwipeD);
+            swipeDown.Direction = UISwipeGestureRecognizerDirection.Down;
+            view.AddGestureRecognizer(swipeDown);
         }
 
         public override void Update(double currentTime)
@@ -228,6 +242,26 @@ namespace Snake
                 x = (width / -2f) + (cellWidth / 2f);
                 y -= cellWidth;
             }
+        }
+
+        void SwipeR()
+        {
+            Console.WriteLine("R"); 
+        }
+
+        void SwipeL()
+        {
+            Console.WriteLine("L");
+        }
+
+        void SwipeU()
+        {
+            Console.WriteLine("U");
+        }
+
+        void SwipeD()
+        {
+            Console.WriteLine("D");
         }
     }
 }
