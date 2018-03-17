@@ -132,7 +132,7 @@ namespace Snake
             bestScore.Position = new CGPoint(
                 x: Frame.GetMidX(),
                 y: gameLogo.Position.Y - 50);
-            bestScore.FontSize = 40;
+            bestScore.FontSize = 20;
             bestScore.Text = $"Best Score: {game.SavedBestScore}";
             bestScore.FontColor = UIColor.White;
             AddChild(bestScore);
@@ -199,17 +199,17 @@ namespace Snake
             currentScore.Position = new CGPoint(
                 x: Frame.GetMidX(), 
                 y: Frame.GetMidY() + (Frame.Size.Height / -2f) + 60);
-            currentScore.FontSize = 40;
+            currentScore.FontSize = 20;
             currentScore.Hidden = true;
             currentScore.Text = "Score: 0";
             currentScore.FontColor = UIColor.White;
             AddChild(currentScore);
 
-            var width = Frame.Size.Width - 50;
-            var height = Frame.Size.Height - 50;
+            var width = Frame.Size.Width - 94;
+            var height = Frame.Size.Height - 106;
             var rect = new CGRect(
                 x: Frame.GetMidX() - width / 2f,
-                y: Frame.GetMidY() - height / 2f,
+                y: Frame.GetMidY() - height / 2f + 40,
                 width: width,
                 height: height);
             gameBG = SKShapeNode.FromRect(rect: rect, cornerRadius: 0.02f);
@@ -223,7 +223,7 @@ namespace Snake
 
         void CreateGameBoard(nfloat width, nfloat height)
         {
-            var cellWidth = 12;
+            var cellWidth = 14;
             var numRows = 40;
             var numCols = 20;
             var x = (width / -2f) + (cellWidth / 2f);
@@ -239,7 +239,7 @@ namespace Snake
                     cellNode.ZPosition = 2;
                     cellNode.Position = new CGPoint(
                         x: Frame.GetMidX() + x,
-                        y: Frame.GetMidY() + y);
+                        y: Frame.GetMidY() + 40 + y);
                     //add to array of cells -- then add to game board
                     gameArray.Add(new CellObj(cellNode, i, j));
                     gameBG.AddChild(cellNode);
