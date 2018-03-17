@@ -17,6 +17,9 @@ namespace Snake
     {
         readonly GameScene scene;
 
+        double nextTime = 0;
+        double timeExtension = 1;
+
         public GameManager(GameScene scene)
         {
             this.scene = scene;
@@ -42,6 +45,22 @@ namespace Snake
                 else
                 {
                     cell.Node.FillColor = UIColor.Clear;
+                }
+            }
+        }
+
+        public void Update(double time)
+        {
+            if (Math.Abs(nextTime) < 0)
+            {
+                nextTime = time + timeExtension;
+            }
+            else
+            {
+                if (time >= nextTime)
+                {
+                    nextTime = time + timeExtension;
+                    Console.WriteLine(time);
                 }
             }
         }

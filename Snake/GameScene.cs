@@ -71,7 +71,7 @@ namespace Snake
 
         public override void Update(double currentTime)
         {
-            // Called before each frame is rendered
+            game.Update(currentTime);
         }
 
         public override void TouchesBegan(NSSet touches, UIEvent evt)
