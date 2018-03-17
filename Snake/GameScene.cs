@@ -52,7 +52,7 @@ namespace Snake
         SKLabelNode gameLogo;
         SKLabelNode bestScore;
         SKShapeNode playButton;
-        SKShapeNode gameBG;
+        public SKShapeNode gameBG;
         public SKLabelNode currentScore;
 
         GameManager game;
@@ -250,6 +250,36 @@ namespace Snake
                 x = (width / -2f) + (cellWidth / 2f);
                 y -= cellWidth;
             }
+        }
+
+        public void Finish()
+        {
+            currentScore.RunAction(SKAction.ScaleTo(0, 0.4), () =>
+            {
+                currentScore.Hidden = true;
+            });
+
+            gameBG.RunAction(SKAction.ScaleTo(0, 0.4), () =>
+            {
+                gameBG.Hidden = true;
+                gameLogo.Hidden = false;
+
+                gameLogo.RunAction(SKAction.MoveTo(
+                    new CGPoint(
+                        x: Frame.GetMidX(),
+                        y: Frame.GetMidY() + (Frame.Size.Height / 2f) - 200),
+                    0.5), () =>
+                    {
+                        playButton.Hidden = false;
+                        playButton.RunAction(SKAction.ScaleTo(1, 0.3));
+
+                        bestScore.RunAction(SKAction.MoveTo(
+                        new CGPoint(
+                            x: gameLogo.Position.X,
+                            y: gameLogo.Position.Y - 50),
+                        0.3));
+                    });
+            });
         }
 
         void SwipeR() => game.Swipe(3);

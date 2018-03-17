@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using CoreGraphics;
 using Foundation;
+using SpriteKit;
 using UIKit;
 
 namespace Snake
@@ -100,6 +101,8 @@ namespace Snake
                     CheckForScore();
 
                     CheckForDeath();
+
+                    FinishAnimation();
                 }
             }
         }
@@ -228,5 +231,33 @@ namespace Snake
                 }
             }
         }
+
+        void FinishAnimation()
+        {
+            if (playerDirection == 0 && scene.playerPositions.Count > 0) {
+                var hasFinished = true;
+                var headOfSnake = scene.playerPositions[0];
+
+                foreach (var position in scene.playerPositions)
+                {
+                    if (!headOfSnake.Equals(position)) {
+                        hasFinished = false;
+                    }
+                }
+
+                if (hasFinished) {
+                    Console.WriteLine("End game");
+                    playerDirection = 4;
+                    //animation has completed
+                    scene.scorePos = CGPoint.Empty;
+                    scene.playerPositions.Clear();
+                    RenderChange();
+
+                    //return to menu
+                    scene.Finish();
+                }
+            }
+        }
+
     }
 }
