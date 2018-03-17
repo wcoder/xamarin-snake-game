@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq;
+using CoreGraphics;
 using Foundation;
 using UIKit;
 
@@ -23,6 +24,8 @@ namespace Snake
 
         int playerDirection = 4;
 
+        Random random = new Random();
+
         public GameManager(GameScene scene)
         {
             this.scene = scene;
@@ -35,6 +38,8 @@ namespace Snake
             scene.playerPositions.Add(new Pos(10, 12));
 
             RenderChange();
+
+            GenerateNewPoint();
         }
 
         void RenderChange()
@@ -48,8 +53,23 @@ namespace Snake
                 else
                 {
                     cell.Node.FillColor = UIColor.Clear;
+
+                    if (scene.scorePos != null) {
+                        if (Math.Floor(scene.scorePos.X) == cell.Y &&
+                            Math.Floor(scene.scorePos.Y) == cell.X)
+                        {
+                            cell.Node.FillColor = UIColor.Red;
+                        }
+                    }
                 }
             }
+        }
+
+        void GenerateNewPoint()
+        {
+            var randomX = random.NextDouble() * 19; // numCols - 1
+            var randomY = random.NextDouble() * 39; // numRows - 1
+            scene.scorePos = new CGPoint(x: randomX, y: randomY);
         }
 
         public void Update(double time)

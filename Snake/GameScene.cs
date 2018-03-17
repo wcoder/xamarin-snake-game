@@ -54,6 +54,8 @@ namespace Snake
         public List<Pos> playerPositions = new List<Pos>();
         public List<CellObj> gameArray = new List<CellObj>();
 
+        public CGPoint scorePos;
+
 
         public GameScene(CGSize size) : base(size)
         {
