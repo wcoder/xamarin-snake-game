@@ -109,7 +109,23 @@ namespace Snake
 
         void StartGame()
         {
-            
+            Console.WriteLine("Start game");
+
+            gameLogo.RunAction(SKAction.MoveTo(
+                new CGPoint(
+                    x: Frame.GetMidX() - 50,
+                    y: Frame.GetMidY() + 600),
+                0.5),
+                () => gameLogo.Hidden = true);
+
+            bestScore.RunAction(SKAction.MoveTo(
+                new CGPoint(
+                    x: Frame.GetMidX(),
+                    y: Frame.GetMidY() + (Frame.Size.Height / -2) + 20),
+                0.4));
+
+            playButton.RunAction(SKAction.ScaleTo(0, 0.3),
+                () => playButton.Hidden = true);
         }
     }
 }

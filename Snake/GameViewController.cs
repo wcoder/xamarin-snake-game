@@ -32,7 +32,7 @@ namespace Snake
             skView.IgnoresSiblingOrder = true;
 
             // Create and configure the scene.
-            var scene = new GameScene(View.Bounds.Size)
+            var scene = new GameScene(skView.Bounds.Size)
             {
                 ScaleMode = SKSceneScaleMode.AspectFill
             };
