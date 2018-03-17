@@ -133,7 +133,7 @@ namespace Snake
                 x: Frame.GetMidX(),
                 y: gameLogo.Position.Y - 50);
             bestScore.FontSize = 40;
-            UpdateBestScoreLabel();
+            bestScore.Text = $"Best Score: {game.SavedBestScore}";
             bestScore.FontColor = UIColor.White;
             AddChild(bestScore);
 
@@ -161,8 +161,6 @@ namespace Snake
             playButton.Path = path;
             AddChild(playButton);
         }
-
-        void UpdateBestScoreLabel() => bestScore.Text = $"Best Score: {game.SavedBestScore}";
 
         void StartGame()
         {
@@ -274,8 +272,6 @@ namespace Snake
                     {
                         playButton.Hidden = false;
                         playButton.RunAction(SKAction.ScaleTo(1, 0.3));
-
-                        UpdateBestScoreLabel();
 
                         bestScore.RunAction(SKAction.MoveTo(
                         new CGPoint(

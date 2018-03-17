@@ -11,7 +11,6 @@ using System;
 using System.Linq;
 using CoreGraphics;
 using Foundation;
-using SpriteKit;
 using UIKit;
 
 namespace Snake
@@ -29,7 +28,6 @@ namespace Snake
 
         Random random = new Random();
 
-        public nint SavedBestScore => NSUserDefaults.StandardUserDefaults.IntForKey(AppDelegate.BEST_SCORE_KEY);
 
         public GameManager(GameScene scene)
         {
@@ -59,9 +57,7 @@ namespace Snake
                 {
                     cell.Node.FillColor = UIColor.Clear;
 
-                    // TODO:
-                    if (Math.Floor(scene.scorePos.X) == cell.Y &&
-                        Math.Floor(scene.scorePos.Y) == cell.X)
+                    if (IsHeadOnEat(cell.Y, cell.X))
                     {
                         cell.Node.FillColor = UIColor.Red;
                     }
@@ -74,17 +70,14 @@ namespace Snake
             (var randomX, var randomY) = GenPointPos();
 
             while (scene.playerPositions.Any(p =>
-                p.X == Math.Floor(randomX) &&
-                p.Y == Math.Floor(randomY)))
+                p.X == Math.Round(randomX) &&
+                p.Y == Math.Round(randomY)))
             {
                 (randomX, randomY) = GenPointPos();
             }
 
             scene.scorePos = new CGPoint(x: randomX, y: randomY);
         }
-
-        (double x, double y) GenPointPos() => (random.NextDouble() * 19,  // cols
-                                               random.NextDouble() * 39); // rows
 
         public void Update(double time)
         {
@@ -193,8 +186,7 @@ namespace Snake
                 var y = scene.playerPositions[0].Y;
 
                 // TODO:
-                if (Math.Floor(scene.scorePos.X) == y &&
-                    Math.Floor(scene.scorePos.Y) == x)
+                if (IsHeadOnEat(y, x))
                 {
                     currentScore += 1;
                     scene.currentScore.Text = $"Score: {currentScore}";
@@ -208,7 +200,7 @@ namespace Snake
             }
         }
 
-        private void CheckForDeath()
+        void CheckForDeath()
         {
             if (scene.playerPositions.Count > 0)
             {
@@ -283,7 +275,18 @@ namespace Snake
             }
             currentScore = 0;
             scene.currentScore.Text = "Score: 0";
-            scene.bestScore.Text = $"Best Score: {bestScore}";
+            scene.bestScore.Text = $"Best Score: {SavedBestScore}";
         }
+
+        (double x, double y) GenPointPos() =>
+            (random.NextDouble() * 19,  // cols
+            random.NextDouble() * 39);  // rows
+
+        public nint SavedBestScore =>
+            NSUserDefaults.StandardUserDefaults.IntForKey(AppDelegate.BEST_SCORE_KEY);
+
+        bool IsHeadOnEat(int x, int y) =>
+            Math.Round(scene.scorePos.X) == x &&
+            Math.Round(scene.scorePos.Y) == y;
     }
 }
