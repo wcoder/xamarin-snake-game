@@ -134,5 +134,18 @@ namespace Snake
 
             RenderChange();
         }
+
+        public void Swipe(int id)
+        {
+            if (!(id == 2 && playerDirection == 4) &&
+                !(id == 4 && playerDirection == 2))
+            {
+                if (!(id == 1 && playerDirection == 3) &&
+                    !(id == 3 && playerDirection == 1))
+                {
+                    playerDirection = id;
+                }
+            }
+        }
     }
 }

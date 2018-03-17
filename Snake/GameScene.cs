@@ -244,24 +244,9 @@ namespace Snake
             }
         }
 
-        void SwipeR()
-        {
-            Console.WriteLine("R"); 
-        }
-
-        void SwipeL()
-        {
-            Console.WriteLine("L");
-        }
-
-        void SwipeU()
-        {
-            Console.WriteLine("U");
-        }
-
-        void SwipeD()
-        {
-            Console.WriteLine("D");
-        }
+        void SwipeR() => game.Swipe(3);
+        void SwipeL() => game.Swipe(1);
+        void SwipeU() => game.Swipe(2);
+        void SwipeD() => game.Swipe(4);
     }
 }
