@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2018 Yauheni Pakala
 //
+
 using System;
 using System.Linq;
 using Foundation;
@@ -18,7 +19,9 @@ namespace Snake
         readonly GameScene scene;
 
         double nextTime = 0;
-        double timeExtension = 1;
+        double timeExtension = 0.15;
+
+        int playerDirection = 4;
 
         public GameManager(GameScene scene)
         {
@@ -60,9 +63,76 @@ namespace Snake
                 if (time >= nextTime)
                 {
                     nextTime = time + timeExtension;
-                    Console.WriteLine(time);
+
+                    UpdatePlayerPosition();
                 }
             }
+        }
+
+        void UpdatePlayerPosition()
+        {
+            var xChange = -1;
+            var yChange = 0;
+
+            switch (playerDirection) 
+            {
+                case 1:
+                    //left
+                    xChange = -1;
+                    yChange = 0;
+                    break;
+                case 2:
+                    //up
+                    xChange = 0;
+                    yChange = -1;
+                    break;
+                case 3:
+                    //right
+                    xChange = 1;
+                    yChange = 0;
+                    break;
+                case 4:
+                    //down
+                    xChange = 0;
+                    yChange = 1;
+                    break;
+                default:
+                    break;
+            }
+
+            if (scene.playerPositions.Count > 0)
+            {
+                var start = scene.playerPositions.Count - 1;
+                while (start > 0)
+                {
+                    scene.playerPositions[start] = scene.playerPositions[start - 1];
+                    start -= 1;
+                }
+                scene.playerPositions[0] = new Pos(scene.playerPositions[0].X + yChange, scene.playerPositions[0].Y + xChange);
+            }
+
+            if (scene.playerPositions.Count > 0) {
+                
+                var pos = scene.playerPositions[0];
+
+                var x = pos.Y;
+                var y = pos.X;
+
+                if (y > 40) {
+                    pos.X = 0;
+                }
+                else if (y < 0) {
+                    pos.X = 40;
+                }
+                else if (x > 20) {
+                    pos.Y = 0;
+                }
+                else if (x < 0) {
+                    pos.Y = 20;
+                }
+            }
+
+            RenderChange();
         }
     }
 }
